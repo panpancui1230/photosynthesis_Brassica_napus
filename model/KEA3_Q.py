@@ -98,6 +98,7 @@ def f(t, y, pKreg, max_PSII, kQA, max_b6f, lumen_protons_per_turnover, PAR, ATP_
     #calculate the changes in QA redox state based on the number of charge separations and equilibration with 
     #the PQ pool
     dQAm = PSII_charge_separations  + PQH2*QA*kQA/Keq_QA_PQ  - QAm * PQ * kQA - PSII_recombination_v
+    # dQAm = PSII_charge_separations  + PQH2*QA*kQA/Keq_QA_PQ  - QAm * PQ * kQA
     dQA = -1*dQAm
 
     b6f_content=0.433 #Journal of Experimental Botany, Vol. 65, No. 8, pp. 1955–1972, 2014
@@ -117,7 +118,7 @@ def f(t, y, pKreg, max_PSII, kQA, max_b6f, lumen_protons_per_turnover, PAR, ATP_
     #PQ + QAm --> PQH2 + QA ; PQH2 + b6f --> PQ    
     PSI_charge_separations= P700_red * light_per_L * PSI_antenna_size * Fd_ox
 
-    dPQH2 = (QAm * PQ * kQA + v_NDH + v_PGR - v_b6f - PQH2*QA*kQA/Keq_QA_PQ)*0.5 
+    dPQH2 = (QAm * PQ * kQA + v_NDH + v_PGR - v_b6f - PQH2*QA*kQA/Keq_QA_PQ)*0.5
     dPQ = -1*dPQH2
     
     
@@ -144,7 +145,7 @@ def f(t, y, pKreg, max_PSII, kQA, max_b6f, lumen_protons_per_turnover, PAR, ATP_
         
     d_ATP_made=d_protons_to_ATP/n                                        
 
-    NADPH_CBC = k_CBC*(1.0-np.exp(-t/300))*(np.log(NADPH_pool/NADP_pool)-np.log(1.25))/(np.log(3.5/1.25))#calc_CBC_NADPH(k_CBC, t, d_ATP_made)
+    NADPH_CBC = k_CBC*(1.0-np.exp(-t/500))*(np.log(NADPH_pool/NADP_pool)-np.log(1.25))/(np.log(3.5/1.25))#calc_CBC_NADPH(k_CBC, t, d_ATP_made)
     #this number in "np.exp(-t/600)" is important, which impacts the shape of the curves
     dNADPH_pool=0.5 * k_Fd_to_NADP*NADP_pool*Fd_red - NADPH_CBC
     dNADP_pool=-1*dNADPH_pool
@@ -211,7 +212,7 @@ def f(t, y, pKreg, max_PSII, kQA, max_b6f, lumen_protons_per_turnover, PAR, ATP_
     new_PsbS_H = computer.calc_PsbS_Protonation(pKPsbS, pHlumen + dpHlumen)
     new_Z=Z+dZ
     
-    new_NPQ=0.05*max_NPQ*new_PsbS_H*new_Z+0.9*max_NPQ*new_PsbS_H+0.05*max_NPQ*new_Z
+    new_NPQ=0.025*max_NPQ*new_PsbS_H*new_Z+0.95*max_NPQ*new_PsbS_H+0.025*max_NPQ*new_Z
     dNPQ=new_NPQ-NPQ #new_PsbS_H-PsbS_H
     dPhi2=0 #
 
@@ -548,7 +549,7 @@ def do_stuff(LIGHT):
 global FREQUENCY, LIGHT, T_ATP
 FREQUENCY = 1/60
 # light_T = [(50, 200), (100, 165), (250, 100), (500, 60), (1000, 40)]
-light_T = [(500, 200)]
+light_T = [(500, 300)]
 
 for LIGHT, T_ATP in light_T:
     do_stuff(LIGHT)

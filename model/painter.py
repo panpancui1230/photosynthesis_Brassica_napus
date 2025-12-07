@@ -155,8 +155,25 @@ class Plotting:
         ax5.ticklabel_format(axis='y', style='sci', scilimits=(-2,2))
         ax5b = ax5.twinx()
         ax5b.ticklabel_format(axis='y', style='sci', scilimits=(-2,2))
+        # 模型的 qL 和 Phi2
         ax5.plot(time_axis, 1-output['QAm'], color='green', label='qL')
-        ax5.plot(time_axis, output['Phi2'], color = 'blue',label ='Phi2')
+        ax5.plot(time_axis, output['Phi2'], color='blue', label='Phi2')
+        # 叠加实验 QY (视作 Phi2)，来自 ms28_QY_data.csv
+        try:
+            qy_df = pd.read_csv('ms28_QY_data.csv')
+            qy_time_s = qy_df['time_s'].values
+            if time_label == 'Time (h)':
+                qy_time = qy_time_s / 3600.0
+            elif time_label == 'Time (min)':
+                qy_time = qy_time_s / 60.0
+            else:
+                qy_time = qy_time_s
+            qy_vals = qy_df['QY'].values
+            ax5.plot(qy_time, qy_vals, '-o', color='black',
+                     markersize=2, linewidth=0.8, label='exp Phi2 (QY)')
+        except Exception:
+            # 读不到实验文件时，只画模型曲线
+            pass
         ax5b.plot(time_axis, output['NADPH_pool'], color='red', label='NADPH_pool')
         ax5.plot(time_axis, output['P700_red'], color = 'm', label = 'P700_red')
         ax5.set_xlabel(time_label)
@@ -236,13 +253,36 @@ class Plotting:
         ax8.ticklabel_format(axis='y', style='sci', scilimits=(-2,2))
         ax8b = ax8.twinx()
         ax8b.ticklabel_format(axis='y', style='sci', scilimits=(-2,2))
-        ax8.plot(time_axis, output['NPQ'], label='qE')
+        # 模型模拟的 NPQ 曲线
+        ax8.plot(time_axis, output['NPQ'], label='sim NPQ')
+        # 叠加实验 NPQ 数据（来自 ms28_NPQ_data.csv）
+        try:
+            exp_df = pd.read_csv('ms28_NPQ_data.csv')
+            exp_time_s = exp_df['time_s'].values
+            # 根据当前时间轴单位，把秒转换成相同单位
+            if time_label == 'Time (h)':
+                exp_time = exp_time_s / 3600.0
+            elif time_label == 'Time (min)':
+                exp_time = exp_time_s / 60.0
+            else:
+                exp_time = exp_time_s
+            exp_npq = exp_df['NPQ'].values
+            # 更小的点，并用线连起来
+            ax8.plot(exp_time, exp_npq, '-o', color='black', markersize=2, linewidth=0.8, label='exp NPQ')
+        except Exception:
+            # 如果没有找到数据文件或读取失败，就只画模拟曲线
+            pass
         ax8.set_xlabel(time_label)
         ax8.set_ylabel('NPQ (qE)')
         ax8b.fill_between(time_axis,output['light_curve'],0,color='red', alpha=.1)
         ax8b.set_ylim(0, 1.1*np.max(output['light_curve']))
         ax8.set_xlim(0, 1.1*np.max(time_axis))
         ax8b.set_xlim(0, 1.1*np.max(time_axis))
+        # y 轴刻度仍按 0.1 间隔设置
+        ymin, ymax = ax8.get_ylim()
+        y_start = np.floor(ymin * 10.0) / 10.0
+        y_end = np.ceil(ymax * 10.0) / 10.0
+        ax8.set_yticks(np.arange(y_start, y_end + 0.1, 0.1))
         ax8b.set_ylabel('intensity')
         ax8b.set_ylabel('intensity')
         ax8.yaxis.label.set_color('blue')
