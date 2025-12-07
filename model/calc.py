@@ -61,7 +61,7 @@ class block:
         return PhiNO, PhiNPQ
     
     def calc_PsbS_Protonation(self, pKPsbS, pHlumen):    
-        PsbS_H=1 / (10 ** (3*(pHlumen - pKPsbS)) + 1)
+        PsbS_H=1 / (10 ** (7*(pHlumen - pKPsbS)) + 1)
         return(PsbS_H)
     
     def ATP_synthase_actvt(self, t, T_ATP):#based on gH+ data

@@ -144,7 +144,7 @@ def f(t, y, pKreg, max_PSII, kQA, max_b6f, lumen_protons_per_turnover, PAR, ATP_
         
     d_ATP_made=d_protons_to_ATP/n                                        
 
-    NADPH_CBC = k_CBC*(1.0-np.exp(-t/900))*(np.log(NADPH_pool/NADP_pool)-np.log(1.25))/(np.log(3.5/1.25))#calc_CBC_NADPH(k_CBC, t, d_ATP_made)
+    NADPH_CBC = k_CBC*(1.0-np.exp(-t/300))*(np.log(NADPH_pool/NADP_pool)-np.log(1.25))/(np.log(3.5/1.25))#calc_CBC_NADPH(k_CBC, t, d_ATP_made)
     #this number in "np.exp(-t/600)" is important, which impacts the shape of the curves
     dNADPH_pool=0.5 * k_Fd_to_NADP*NADP_pool*Fd_red - NADPH_CBC
     dNADP_pool=-1*dNADPH_pool
@@ -211,7 +211,7 @@ def f(t, y, pKreg, max_PSII, kQA, max_b6f, lumen_protons_per_turnover, PAR, ATP_
     new_PsbS_H = computer.calc_PsbS_Protonation(pKPsbS, pHlumen + dpHlumen)
     new_Z=Z+dZ
     
-    new_NPQ=0.4*max_NPQ*new_PsbS_H*new_Z+0.5*max_NPQ*new_PsbS_H+0.1*max_NPQ*new_Z
+    new_NPQ=0.05*max_NPQ*new_PsbS_H*new_Z+0.9*max_NPQ*new_PsbS_H+0.05*max_NPQ*new_Z
     dNPQ=new_NPQ-NPQ #new_PsbS_H-PsbS_H
     dPhi2=0 #
 
@@ -548,6 +548,7 @@ def do_stuff(LIGHT):
 global FREQUENCY, LIGHT, T_ATP
 FREQUENCY = 1/60
 # light_T = [(50, 200), (100, 165), (250, 100), (500, 60), (1000, 40)]
-light_T = [(500, 60)]
+light_T = [(500, 200)]
+
 for LIGHT, T_ATP in light_T:
     do_stuff(LIGHT)
