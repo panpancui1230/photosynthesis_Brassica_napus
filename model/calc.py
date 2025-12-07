@@ -70,7 +70,7 @@ class block:
         return actvt
     
     def Vproton_pmf_actvt(self, pmf, actvt, ATP_synthase_max_turnover, n):# fraction of activity based on pmf, pmf_act is the half_max actvt pmf
-        v_proton_active = 1 - (1 / (10 ** ((pmf - 0.132)*1.5/0.06) + 1))#reduced ATP synthase
+        v_proton_active = 1 - (1 / (10 ** ((pmf - 0.162)*1.5/0.06) + 1))#reduced ATP synthase
         v_proton_inert = 1-(1 / (10 ** ((pmf - 0.204)*1.5/0.06) + 1))#oxidized ATP synthase
         
         v_active = actvt * v_proton_active * n * ATP_synthase_max_turnover

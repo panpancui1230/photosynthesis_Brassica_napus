@@ -74,7 +74,7 @@ def f(t, y, pKreg, max_PSII, kQA, max_b6f, lumen_protons_per_turnover, PAR, ATP_
     sun = sunshine()
     #The following are holders for paramters for testing internal functions of f
     PAR = sun.light(t, 1200, LIGHT, FREQUENCY, 900, 100)
-    light_per_L=0.84 * PAR/0.7
+    light_per_L=0.83 * PAR/0.7
 
 
     computer = block()
@@ -515,7 +515,7 @@ def sim_a_gtype(gtype_dict, gtype='WT', light = 100):
     Kx_initial=sim_constants()    
 
     constants_dict={}
-    k_CBC_light = 60 * (light/(light+250))#this needs change with different light intensity    
+    k_CBC_light = 108 * (light/(light+617))#this needs change with different light intensity    
 
     output_dict={}
     on = gtype
@@ -536,56 +536,18 @@ def sim_a_gtype(gtype_dict, gtype='WT', light = 100):
     paint.plot_interesting_stuff(gtype, output_dict)
     # plot_interesting_stuff(gtype, output_dict)
     process_a_gtype(gtype_dict,parameters_of_interest, output_dict,gtype+'_'+str(light)+'uE')    
-
 def do_stuff(LIGHT):
+    """
+    Run simulation and plotting for WT only.
+    """
     print(LIGHT)
     WT = {}
+    # Only simulate and plot WT; no kea3 or delta calculations
     sim_a_gtype(WT, 'WT', LIGHT)
-    kea3 ={}
-    sim_a_gtype(kea3, 'kea3', LIGHT)
-    time_min = WT['time_axis']/60
-    idx = np.argwhere(time_min == 2)[0][0]
-    
-    delta_NPQ = kea3['NPQ']-WT['NPQ']
-    delta_LEF = kea3['LEF']-WT['LEF']
-    
-    # df_list.append(time_min)
-    df_ = {}
-
-    df_['kea3_dNPQ'] = delta_NPQ
-    df_['kea3_dLEF'] = delta_LEF
-    df_['WT_NPQ'] = WT['NPQ']
-    df_['WT_LEF'] = WT['LEF']
-    fig = plt.figure(num=3, figsize=(5,4), dpi=200)
-    plt.plot(time_min[1:],delta_NPQ[1:],label = '∆NPQ: kea3 - WT')
-    plt.legend()
-    plt.show()
-    plt.close()
-    fig = plt.figure(num=3, figsize=(5,4), dpi=200)
-    plt.plot(time_min[1:],delta_LEF[1:],label = '∆LEF: kea3 - WT')
-    plt.legend()
-    plt.show()
-    plt.close()
-    pdindex =pd.Index(WT['time_axis'], name = 'time/s')
-    df_NPQ = pd.DataFrame(df_, index = pdindex)
-    file_path = './logs/' + 'delta_NPQ_LEF' + str(LIGHT) + '_uE_simulated.csv'
-    df_NPQ.to_csv(file_path) 
-    plt.show()
-    plt.close()
-
-    return (delta_NPQ[idx], delta_LEF[idx],\
-            delta_NPQ[idx]/WT['NPQ'][idx], delta_LEF[idx]/WT['LEF'][idx])
 
 global FREQUENCY, LIGHT, T_ATP
 FREQUENCY = 1/60
-result_dict = {}
-light_T = [(50, 200), (100, 165), (250, 100), (500, 60), (1000, 40)]
+# light_T = [(50, 200), (100, 165), (250, 100), (500, 60), (1000, 40)]
+light_T = [(500, 60)]
 for LIGHT, T_ATP in light_T:
-    delta = do_stuff(LIGHT)
-    result_dict[LIGHT] = delta
-col_list = ['dNPQ_2min', 'dLEF_2min', 'dNPQ_rel', 'dLEF_rel']    
-column = {}
-for i, col in enumerate(col_list):
-    column[i] = col
-result_df = pd.DataFrame(result_dict).T
-result_df.rename(columns = column, inplace= True)
+    do_stuff(LIGHT)
