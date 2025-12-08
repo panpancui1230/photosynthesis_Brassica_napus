@@ -101,7 +101,8 @@ def f(t, y, pKreg, max_PSII, kQA, max_b6f, lumen_protons_per_turnover, PAR, ATP_
     # dQAm = PSII_charge_separations  + PQH2*QA*kQA/Keq_QA_PQ  - QAm * PQ * kQA
     dQA = -1*dQAm
 
-    b6f_content=0.633 #Journal of Experimental Botany, Vol. 65, No. 8, pp. 1955–1972, 2014
+    # b6f_content=0.433 #Journal of Experimental Botany, Vol. 65, No. 8, pp. 1955–1972, 2014
+    b6f_content=0.866
 
     v_b6f=computer.calc_v_b6f(max_b6f, b6f_content, pHlumen, pKreg, PQ, PQH2, PC_ox, PC_red, Em7_PC, Em7_PQH2, pmf)
     
@@ -145,7 +146,7 @@ def f(t, y, pKreg, max_PSII, kQA, max_b6f, lumen_protons_per_turnover, PAR, ATP_
         
     d_ATP_made=d_protons_to_ATP/n                                        
 
-    NADPH_CBC = k_CBC*(1.0-np.exp(-t/500))*(np.log(NADPH_pool/NADP_pool)-np.log(1.25))/(np.log(3.5/1.25))#calc_CBC_NADPH(k_CBC, t, d_ATP_made)
+    NADPH_CBC = k_CBC*(1.0-np.exp(-t/300))*(np.log(NADPH_pool/NADP_pool)-np.log(1.25))/(np.log(3.5/1.25))#calc_CBC_NADPH(k_CBC, t, d_ATP_made)
     #this number in "np.exp(-t/600)" is important, which impacts the shape of the curves
     dNADPH_pool=0.5 * k_Fd_to_NADP*NADP_pool*Fd_red - NADPH_CBC
     dNADP_pool=-1*dNADPH_pool
