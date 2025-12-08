@@ -46,7 +46,7 @@ class block:
         return(v_Z, v_V)
     
     def calc_CBC_NADPH(self, k_CBC,t,d_ATP_made):
-        NADPH_CBC_t =  k_CBC*(1.0-np.exp(-t/300))
+        NADPH_CBC_t =  k_CBC*(1.0-np.exp(-t/500))
         NADPH_CBC_ATP =0.6*d_ATP_made
         NADPH_CBC = min([NADPH_CBC_ATP,NADPH_CBC_t])
         return NADPH_CBC
@@ -61,7 +61,7 @@ class block:
         return PhiNO, PhiNPQ
     
     def calc_PsbS_Protonation(self, pKPsbS, pHlumen):    
-        PsbS_H=1 / (10 ** (6.5*(pHlumen - pKPsbS)) + 1)
+        PsbS_H=1 / (10 ** (6*(pHlumen - pKPsbS)) + 1)
         return(PsbS_H)
     
     def ATP_synthase_actvt(self, t, T_ATP):#based on gH+ data
