@@ -160,7 +160,7 @@ class Plotting:
         ax5.plot(time_axis, output['Phi2'], color='blue', label='Phi2')
         # 叠加实验 QY (视作 Phi2)，来自 ms28_QY_data.csv
         try:
-            qy_df = pd.read_csv('ms28_QY_data.csv')
+            qy_df = pd.read_csv('ms28_QY_data_new.csv')
             qy_time_s = qy_df['time_s'].values
             if time_label == 'Time (h)':
                 qy_time = qy_time_s / 3600.0
@@ -257,7 +257,7 @@ class Plotting:
         ax8.plot(time_axis, output['NPQ'], label='sim NPQ')
         # 叠加实验 NPQ 数据（来自 ms28_NPQ_data.csv）
         try:
-            exp_df = pd.read_csv('ms28_NPQ_data.csv')
+            exp_df = pd.read_csv('ms28_NPQ_data_new.csv')
             exp_time_s = exp_df['time_s'].values
             # 根据当前时间轴单位，把秒转换成相同单位
             if time_label == 'Time (h)':
