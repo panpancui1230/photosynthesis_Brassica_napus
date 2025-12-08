@@ -101,7 +101,7 @@ def f(t, y, pKreg, max_PSII, kQA, max_b6f, lumen_protons_per_turnover, PAR, ATP_
     # dQAm = PSII_charge_separations  + PQH2*QA*kQA/Keq_QA_PQ  - QAm * PQ * kQA
     dQA = -1*dQAm
 
-    b6f_content=0.433 #Journal of Experimental Botany, Vol. 65, No. 8, pp. 1955–1972, 2014
+    b6f_content=0.633 #Journal of Experimental Botany, Vol. 65, No. 8, pp. 1955–1972, 2014
 
     v_b6f=computer.calc_v_b6f(max_b6f, b6f_content, pHlumen, pKreg, PQ, PQH2, PC_ox, PC_red, Em7_PC, Em7_PQH2, pmf)
     
