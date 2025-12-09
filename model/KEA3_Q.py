@@ -460,14 +460,14 @@ def dark_equibration(y_initial, Kx, total_duration, **keyword_parameters):
         return(dark_equilibrated_initial_y)
 
     
-global_painter = Plotting()
-plot_results={}
-plot_results['pmf_params']=global_painter.plot_pmf_params
-plot_results['pmf_params_offset']=global_painter.plot_pmf_params_offset
-plot_results['K_and_parsing']=global_painter.plot_K_and_parsing
-plot_results['plot_QAm_and_singletO2']=global_painter.plot_QAm_and_singletO2
-plot_results['plot_cum_LEF_singetO2']=global_painter.plot_cum_LEF_singetO2
-plot_results['b6f_and_balance'] = global_painter.b6f_and_balance
+# global_painter = Plotting()
+# plot_results={}
+# plot_results['pmf_params']=global_painter.plot_pmf_params
+# plot_results['pmf_params_offset']=global_painter.plot_pmf_params_offset
+# plot_results['K_and_parsing']=global_painter.plot_K_and_parsing
+# plot_results['plot_QAm_and_singletO2']=global_painter.plot_QAm_and_singletO2
+# plot_results['plot_cum_LEF_singetO2']=global_painter.plot_cum_LEF_singetO2
+# plot_results['b6f_and_balance'] = global_painter.b6f_and_balance
     
 
 class ListTable(list):
@@ -536,7 +536,16 @@ def sim_a_gtype(gtype_dict, gtype='WT', light = 100):
     output_dict['qL'] = 1-output_dict['QAm']
     paint = Plotting()
     paint.plot_interesting_stuff(gtype, output_dict)
-    # plot_interesting_stuff(gtype, output_dict)
+    # 单独绘制第 5 张 Phi2 图和第 8 张 NPQ 图
+    try:
+        paint.plot_phi2_panel(f'{gtype}_Phi2', output_dict)
+    except Exception:
+        pass
+    try:
+        paint.plot_npq_panel(f'{gtype}_NPQ', output_dict)
+    except Exception:
+        pass
+    # 保存数值结果
     process_a_gtype(gtype_dict,parameters_of_interest, output_dict,gtype+'_'+str(light)+'uE')    
 def do_stuff(LIGHT):
     """
