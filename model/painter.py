@@ -329,7 +329,7 @@ class Plotting:
         """
         单独绘制 Phi2：只包含 Phi2 的线和实验点（无 qL、NADPH_pool、P700_red）。
         """
-        plt.rcParams.update({'font.size': 5})
+        plt.rcParams.update({'font.size': 10, 'font.family': 'Arial'})
 
         time_axis_seconds = output['time_axis']
         max_time = np.max(time_axis_seconds)
@@ -347,11 +347,11 @@ class Plotting:
         ax5 = fig.add_subplot(111)
         ax5.ticklabel_format(axis='y', style='sci', scilimits=(-2, 2))
 
-        # 模拟 Phi2：黑色实线
+        # 模拟 Phi2：红色实线
         ax5.plot(
             time_axis[1:],
             output['Phi2'][1:],
-            color='black',
+            color='red',
             linewidth=1.0,
             label=r'Simulated, 500 $\mu$mol quanta m$^{-2}$ s$^{-1}$',
         )
@@ -415,7 +415,9 @@ class Plotting:
         ax5.set_xlabel(time_label)
         ax5.set_ylabel('Phi2')
 
-        ax5.set_xlim(0, 1.1 * np.max(time_axis))
+        ax5.set_xlim(0, 27)
+        ax5.set_ylim(0, 1) # y轴范围设置为0到1
+        ax5.set_yticks([0.0, 0.2, 0.4, 0.6, 0.8, 1.0]) # 设置y轴刻度
 
         ax5.tick_params(axis='y', colors='black')
         ax5.yaxis.label.set_color('black')
@@ -425,7 +427,7 @@ class Plotting:
         ax5.set_xlim(0, 27)
 
         # 图例（左轴即可）
-        ax5.legend(loc='best', fontsize=5, frameon=False)
+        ax5.legend(loc='upper left', fontsize=6, frameon=False)
 
         plt.tight_layout(pad=0.5)
         plt.show()
@@ -435,7 +437,7 @@ class Plotting:
         单独绘制原来图中的第 8 个子图：NPQ（含实验 NPQ）以及光强。
         """
         ltc = 'red'
-        plt.rcParams.update({'font.size': 5})
+        plt.rcParams.update({'font.size': 10, 'font.family': 'Arial'})
 
         time_axis_seconds = output['time_axis']
         max_time = np.max(time_axis_seconds)
@@ -455,11 +457,11 @@ class Plotting:
         ax8b = ax8.twinx()
         ax8b.ticklabel_format(axis='y', style='sci', scilimits=(-2, 2))
 
-        # 模拟 NPQ：黑色实线
+        # 模拟 NPQ：红色实线
         ax8.plot(
             time_axis[1:],
             output['NPQ'][1:],
-            color='black',
+            color='red',
             linewidth=1.0,
             label=r'Simulated, 500 $\mu$mol quanta m$^{-2}$ s$^{-1}$',
         )
@@ -530,9 +532,9 @@ class Plotting:
         ax8.set_xlim(0, 1.1 * np.max(time_axis))
         ax8b.set_xlim(0, 1.1 * np.max(time_axis))
 
-        # 将 NPQ 小图的 y 轴刻度固定为 0, 0.5, 1, 2
-        ax8.set_ylim(0, 2)
-        ax8.set_yticks([0.0, 0.5, 1.0, 1.5, 2.0])
+        # 将 NPQ 小图的 y 轴刻度固定为 0, 0.5, 1, 2, ... 2.2
+        ax8.set_ylim(0, 2.3)
+        ax8.set_yticks([0.0, 0.5, 1.0, 1.5, 2.0, 2.2])
 
         ax8.yaxis.label.set_color('black')
         ax8.spines['left'].set_color('black')
@@ -550,7 +552,7 @@ class Plotting:
         ax8.set_xlim(0, 27)
         ax8.locator_params(axis='y', nbins=4)
 
-        ax8.legend(loc='upper left', fontsize=5, frameon=False)
+        ax8.legend(loc='upper right', fontsize=6, frameon=False)
 
         plt.tight_layout(pad=0.5)
         plt.show()
