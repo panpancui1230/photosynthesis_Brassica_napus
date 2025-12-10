@@ -48,14 +48,14 @@ class Plotting:
             time_axis=time_axis_seconds
             time_label='Time (s)'
 
-        fig = plt.figure(num=figure_name, figsize=(5,4), dpi=200)
+        fig = plt.figure(num=figure_name, figsize=(5,4), dpi=200, facecolor='white')
         ax1 = fig.add_subplot(331)
         ax1.yaxis.set_major_formatter(mpl.ticker.ScalarFormatter(useMathText=True, useOffset=True))
         ax1.ticklabel_format(axis='y', style='sci', scilimits=(-2,2))
         ax1b = ax1.twinx()
         ax1.plot(time_axis, output['pmf'], label='pmf', zorder=3)
         ax1b.ticklabel_format(axis='y', style='sci', scilimits=(-2,2))
-        ax1b.fill_between(time_axis,output['light_curve'],0,color=ltc, alpha=.1, zorder=2)
+        # ax1b.fill_between(time_axis,output['light_curve'],0,color=ltc, alpha=.1, zorder=2)
         ax1.set_xlabel(time_label)
         ax1.set_ylabel('pmf (V)')
         ax1b.set_ylim(0, 1.1*np.max(output['light_curve']))
@@ -80,7 +80,7 @@ class Plotting:
         ax2.plot(time_axis, output['pHstroma'],color = 'green')
         ax2.yaxis.set_major_formatter(FormatStrFormatter('%.1f'))
         ax2.set_xlabel(time_label)
-        ax2b.fill_between(time_axis,output['light_curve'],0,color='red', alpha=.1)
+        # ax2b.fill_between(time_axis,output['light_curve'],0,color='red', alpha=.1)
         ax2b.set_ylim(0, 1.1*np.max(output['light_curve']))
         ax2b.set_ylabel('intensity')
         ax2.set_ylabel('pH of lumen and stroma')
@@ -107,7 +107,7 @@ class Plotting:
         ax3b.ticklabel_format(axis='y', style='sci', scilimits=(-2,2))
         ax3.set_xlabel(time_label)
         ax3.set_ylabel(r'$\Delta\psi$ (V)')
-        ax3b.fill_between(time_axis,output['light_curve'],0,color='red', alpha=.1)
+        # ax3b.fill_between(time_axis,output['light_curve'],0,color='red', alpha=.1)
         ax3b.set_ylim(0, 1.1*np.max(output['light_curve']))
         ax3b.set_ylabel('intensity')
         ax3.set_xlim(0, 1.1*np.max(time_axis))
@@ -134,7 +134,7 @@ class Plotting:
         ax4.plot(time_axis, output['Klumen'], label='K+ lumen')
         ax4.set_xlabel(time_label)
         ax4.set_ylabel(r'$K^{+} in lumen$')
-        ax4b.fill_between(time_axis,output['light_curve'],0,color='red', alpha=.1)
+        # ax4b.fill_between(time_axis,output['light_curve'],0,color='red', alpha=.1)
         ax4b.set_ylim(0, 1.1*np.max(output['light_curve']))
         ax4.set_xlim(0, 1.1*np.max(time_axis))
         ax4b.set_xlim(0, 1.1*np.max(time_axis))
@@ -225,7 +225,7 @@ class Plotting:
         ax7.plot(time_axis, output['V'], label='V')
         ax7.set_xlabel(time_label)
         ax7.set_ylabel('Z and V')
-        ax7b.fill_between(time_axis,output['light_curve'],0,color='red', alpha=.1)
+        # ax7b.fill_between(time_axis,output['light_curve'],0,color='red', alpha=.1)
         ax7b.set_ylim(0, 1.1*np.max(output['light_curve']))
         ax7b.set_ylabel('intensity')
         ax7.set_xlim(0, 1.1*np.max(time_axis))
@@ -275,8 +275,8 @@ class Plotting:
             # 如果没有找到数据文件或读取失败，就只画模拟曲线
             pass
         ax8.set_xlabel(time_label)
-        ax8.set_ylabel('NPQ (qE)')
-        ax8b.fill_between(time_axis,output['light_curve'],0,color='red', alpha=.1)
+        ax8.set_ylabel('NPQ')
+        # ax8b.fill_between(time_axis,output['light_curve'],0,color='red', alpha=.1)
         ax8b.set_ylim(0, 1.1*np.max(output['light_curve']))
         ax8.set_xlim(0, 1.1*np.max(time_axis))
         ax8b.set_xlim(0, 1.1*np.max(time_axis))
@@ -287,14 +287,12 @@ class Plotting:
         y_end = np.ceil(ymax * 2.0) / 2.0          # 向上取到最接近的 0.5 倍数
         ax8.set_yticks(np.arange(y_start, y_end + 0.5, 0.5))
         ax8b.set_ylabel('intensity')
-        ax8b.set_ylabel('intensity')
-        ax8.yaxis.label.set_color('blue')
-        ax8b.yaxis.label.set_color(ltc)
-        ax8.spines['left'].set_color('blue')
-        ax8b.spines['right'].set_color(ltc)
-        ax8b.spines['left'].set_color('blue')
-        ax8.tick_params(axis='y', colors='blue')
-        ax8b.tick_params(axis='y', colors=ltc)
+        ax8b.set_ylabel('')
+        ax8b.set_yticks([])
+        ax8b.spines['right'].set_visible(False)
+        ax8b.spines['left'].set_visible(False)
+        ax8b.spines['top'].set_visible(False)
+        ax8b.spines['bottom'].set_visible(False)
         ax8.locator_params(axis = 'x', nbins = 4)# (or axis = 'y') 
         ax8.locator_params(axis = 'y', nbins = 4)# (or axis = 'y') 
         ax8b.locator_params(axis = 'x', nbins = 4)# (or axis = 'y') 
@@ -308,7 +306,7 @@ class Plotting:
         ax9.plot(time_axis, output['Cl_stroma'],color = 'red', label ='Cl_stroma')
         ax9.set_xlabel(time_label)
         ax9.set_ylabel(r'$Cl^{-} lumen(blue), stroma(red)$')
-        ax9b.fill_between(time_axis,output['light_curve'],0,color='red', alpha=.1)
+        # ax9b.fill_between(time_axis,output['light_curve'],0,color='red', alpha=.1)
         ax9b.set_ylim(0, 1.1*np.max(output['light_curve']))
         ax9.set_xlim(0, 1.1*np.max(time_axis))
         ax9b.set_xlim(0, 1.1*np.max(time_axis))
@@ -345,14 +343,14 @@ class Plotting:
             time_axis = time_axis_seconds
             time_label = 'Time (s)'
 
-        fig = plt.figure(num=figure_name, figsize=(3, 2.5), dpi=200)
+        fig = plt.figure(num=figure_name, figsize=(3, 2.5), dpi=200, facecolor='white')
         ax5 = fig.add_subplot(111)
         ax5.ticklabel_format(axis='y', style='sci', scilimits=(-2, 2))
 
         # 模拟 Phi2：黑色实线
         ax5.plot(
-            time_axis,
-            output['Phi2'],
+            time_axis[1:],
+            output['Phi2'][1:],
             color='black',
             linewidth=1.0,
             label=r'Simulated, 500 $\mu$mol quanta m$^{-2}$ s$^{-1}$',
@@ -391,8 +389,8 @@ class Plotting:
 
             # 先画测量点（空心黑圆）
             ax5.plot(
-                qy_time,
-                qy_mean,
+                qy_time[1:],
+                qy_mean[1:],
                 'o',
                 color='black',
                 markersize=3,
@@ -402,9 +400,9 @@ class Plotting:
             )
             # 再画仅包含竖直误差线（无帽、无标记）
             ax5.errorbar(
-                qy_time,
-                qy_mean,
-                yerr=qy_std,
+                qy_time[1:],
+                qy_mean[1:],
+                yerr=qy_std[1:],
                 fmt='none',
                 ecolor='black',
                 elinewidth=0.6,
@@ -419,15 +417,15 @@ class Plotting:
 
         ax5.set_xlim(0, 1.1 * np.max(time_axis))
 
-        ax5.tick_params(axis='y', colors='blue')
-        ax5.yaxis.label.set_color('blue')
-        ax5.spines['left'].set_color('blue')
+        ax5.tick_params(axis='y', colors='black')
+        ax5.yaxis.label.set_color('black')
+        ax5.spines['left'].set_color('black')
 
-        ax5.locator_params(axis='x', nbins=4)
-        ax5.locator_params(axis='y', nbins=4)
+        ax5.set_xticks([0, 5, 10, 15, 20, 25])
+        ax5.set_xlim(0, 27)
 
         # 图例（左轴即可）
-        ax5.legend(loc='best', fontsize=5)
+        ax5.legend(loc='best', fontsize=5, frameon=False)
 
         plt.tight_layout(pad=0.5)
         plt.show()
@@ -451,7 +449,7 @@ class Plotting:
             time_axis = time_axis_seconds
             time_label = 'Time (s)'
 
-        fig = plt.figure(num=figure_name, figsize=(3, 2.5), dpi=200)
+        fig = plt.figure(num=figure_name, figsize=(3, 2.5), dpi=200, facecolor='white')
         ax8 = fig.add_subplot(111)
         ax8.ticklabel_format(axis='y', style='sci', scilimits=(-2, 2))
         ax8b = ax8.twinx()
@@ -459,8 +457,8 @@ class Plotting:
 
         # 模拟 NPQ：黑色实线
         ax8.plot(
-            time_axis,
-            output['NPQ'],
+            time_axis[1:],
+            output['NPQ'][1:],
             color='black',
             linewidth=1.0,
             label=r'Simulated, 500 $\mu$mol quanta m$^{-2}$ s$^{-1}$',
@@ -498,8 +496,8 @@ class Plotting:
 
             # 先画测量点（空心黑圆）
             ax8.plot(
-                exp_time,
-                npq_mean,
+                exp_time[1:],
+                npq_mean[1:],
                 'o',
                 color='black',
                 markersize=3,
@@ -509,9 +507,9 @@ class Plotting:
             )
             # 再画仅包含竖直误差线（无帽、无标记）
             ax8.errorbar(
-                exp_time,
-                npq_mean,
-                yerr=npq_std,
+                exp_time[1:],
+                npq_mean[1:],
+                yerr=npq_std[1:],
                 fmt='none',
                 ecolor='black',
                 elinewidth=0.6,
@@ -522,12 +520,12 @@ class Plotting:
             pass
 
         ax8.set_xlabel(time_label)
-        ax8.set_ylabel('NPQ (qE)')
+        ax8.set_ylabel('NPQ')
 
         # 右轴：光强
-        ax8b.fill_between(time_axis, output['light_curve'], 0, color='red', alpha=0.1)
+        # ax8b.fill_between(time_axis, output['light_curve'], 0, color='red', alpha=0.1)
         ax8b.set_ylim(0, 1.1 * np.max(output['light_curve']))
-        ax8b.set_ylabel('intensity')
+        ax8b.set_ylabel('')
 
         ax8.set_xlim(0, 1.1 * np.max(time_axis))
         ax8b.set_xlim(0, 1.1 * np.max(time_axis))
@@ -536,20 +534,23 @@ class Plotting:
         ax8.set_ylim(0, 2)
         ax8.set_yticks([0.0, 0.5, 1.0, 1.5, 2.0])
 
-        ax8.yaxis.label.set_color('blue')
-        ax8b.yaxis.label.set_color(ltc)
-        ax8.spines['left'].set_color('blue')
-        ax8b.spines['right'].set_color(ltc)
-        ax8b.spines['left'].set_color('blue')
-        ax8.tick_params(axis='y', colors='blue')
-        ax8b.tick_params(axis='y', colors=ltc)
+        ax8.yaxis.label.set_color('black')
+        ax8.spines['left'].set_color('black')
+        ax8.tick_params(axis='y', colors='black')
 
-        ax8.locator_params(axis='x', nbins=4)
+        # Hide right axis (ax8b) elements
+        ax8b.set_ylabel('')
+        ax8b.set_yticks([])
+        ax8b.spines['right'].set_visible(False)
+        ax8b.spines['left'].set_visible(False)
+        ax8b.spines['top'].set_visible(False)
+        ax8b.spines['bottom'].set_visible(False)
+
+        ax8.set_xticks([0, 5, 10, 15, 20, 25])
+        ax8.set_xlim(0, 27)
         ax8.locator_params(axis='y', nbins=4)
-        ax8b.locator_params(axis='x', nbins=4)
-        ax8b.locator_params(axis='y', nbins=4)
 
-        ax8.legend(loc='upper left', fontsize=5)
+        ax8.legend(loc='upper left', fontsize=5, frameon=False)
 
         plt.tight_layout(pad=0.5)
         plt.show()
