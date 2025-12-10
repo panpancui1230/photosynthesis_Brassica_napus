@@ -63,6 +63,7 @@ species_labels = [
 
 warnings.filterwarnings("ignore")
 max_light_change=1
+DARK_START = 1145  # start of dark phase (s)
 points_per_segment=1000
 
 
@@ -74,6 +75,9 @@ def f(t, y, pKreg, max_PSII, kQA, max_b6f, lumen_protons_per_turnover, PAR, ATP_
     sun = sunshine()
     #The following are holders for paramters for testing internal functions of f
     PAR = sun.light(t, 1200, LIGHT, FREQUENCY, 900, 100)
+    # After DARK_START seconds, switch to dark (PAR = 0)
+    if t >= DARK_START:
+        PAR = 0
     light_per_L=0.83 * PAR/0.7
 
 
@@ -531,7 +535,8 @@ def sim_a_gtype(gtype_dict, gtype='WT', light = 100):
     Kx.k_CBC = k_CBC_light
     constants_dict[on]=Kx #store constants in constants_dict
 
-    output_dict=sim_ivp(Kx, initial_sim_state_list, 1200)
+    # simulate 0–1500 s; after DARK_START light is forced to 0 in f()
+    output_dict=sim_ivp(Kx, initial_sim_state_list, 1500)
     Changed_Constants_Table('Change Constants', Kx_initial, Kx)
     output_dict['qL'] = 1-output_dict['QAm']
     paint = Plotting()
